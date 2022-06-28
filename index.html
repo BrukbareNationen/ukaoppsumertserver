@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+</style>
+<body style="margin: 0 auto;
+width: 680px;
+padding: 0 30px;
+max-width: 100%;
+box-sizing: border-box;
+background: lightblue;">
+
+<!-- Les mer-modul -->
+<section class="lab-rm">
+</section>
+
+<script>
+const content = {
+    title: "Tittel",
+    desc: "Beskrivelse",
+    tag: "Serie",
+    img: "#",
+    seriesUrl: "#",
+    itemWidth: 480,
+    articles: [
+        {
+            url: "#1",
+            uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
+            title: "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
+        },
+        {
+            url: "#2",
+            uuid: "e7a0770f-b59d-5386-a202-2f708e33db54",
+            title: "Rasmus Hansson: – Hvis EU-avtalen raserer norsk landbruk, stemmer jeg nei"
+        },
+        {
+            url: "#3",
+            uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
+            title: "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
+        },
+        {
+            url: "#4",
+            uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
+            title: "Siste slide"
+        }
+    ]
+}
+
+// Build
+const articleUrl = location.protocol + '//' + location.host + location.pathname,
+    rm = document.querySelector(".lab-rm")
+
+const header = document.createElement("div")
+header.classList.add("lab-rm__header")
+let headerContent = ""
+if (content.img != "") headerContent += `<img src="${content.img}">`
+headerContent += `<div><h2>${content.title}</h2><div class="lab-rm__desc">${content.desc}</div></div>`
+header.innerHTML = headerContent
+rm.appendChild(header)
+
+const container = document.createElement("div")
+container.classList.add("lab-rm__container")
+rm.appendChild(container)
+
+const c = document.createElement("div")
+c.classList.add("lab-rm__content")
+container.appendChild(c)
+const helper = `<div class="lab-rm__scroll-helper"><div class="lab-rm__scroll-button"><svg width="24" height="24" fill-rule="evenodd" clip-rule="evenodd"><path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"/></svg></div></div>`
+let articles = ""
+content.articles.forEach(e => {
+    if (e.url != articleUrl) articles += `
+    <article class="lab-rm__elem">
+        <a href="${e.url}">
+            <div class="lab-rm__overlay">
+                <h3>${e.title}</h3>
+            </div>
+            <img src="https://imengine.public.prod.tun.infomaker.io?uuid=${e.uuid}&type=preview&function=hardcrop&q=85&width=${content.itemWidth}" width="${content.itemWidth}">
+        </a>
+    </article>`
+})
+c.innerHTML = articles + helper
+
+// Scroll
+const scroll = function () {
+    let f = c.children[0], 
+        s = f.currentStyle || window.getComputedStyle(f), 
+        w = f.offsetWidth, 
+        m = parseFloat(s.marginRight), 
+        step = w + m
+    let hidden = c.scrollWidth - c.offsetWidth
+    if ((c.offsetWidth + c.scrollLeft) > (c.scrollWidth - 20)) step = -c.scrollLeft
+    else if (hidden < c.offsetWidth) step = hidden
+    c.scrollTo({
+        left: (c.scrollLeft + step),
+        behavior: 'smooth'
+    })
+};
+
+const slider = document.querySelector( 'div.lab-rm__content');
+let isDown = false;
+let startX;
+let scrollLeft;
+
+slider.addEventListener('mousedown', (e) => {
+  isDown = true;  
+  startX = e.pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+});
+slider.addEventListener('mouseleave', () => {
+  isDown = false;
+  
+});
+slider.addEventListener('mouseup', () => {
+  isDown = false;
+  
+});
+slider.addEventListener('mousemove', (e) => {
+  if(!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - slider.offsetLeft;
+  const walk = (x - startX) * 1; //scroll-fast
+  slider.scrollLeft = scrollLeft - walk;
+  //console.log(walk);
+});
+
+// Check scroll
+const checkScroll = function () {
+    if ((c.offsetWidth + c.scrollLeft) > (c.scrollWidth - 20)) {
+        rm.querySelector(".lab-rm__scroll-helper").classList.add("lab-rm__scroll-helper--reverse")
+    }
+    else {
+        rm.querySelector(".lab-rm__scroll-helper").classList.remove("lab-rm__scroll-helper--reverse")
+    }
+}
+
+// Listen scroll
+document.querySelector(".lab-rm__scroll-button").addEventListener('click', scroll)
+c.addEventListener("scroll", checkScroll)
+
+// Add styles
+const style = document.createElement('style')
+style.innerHTML = `
+.lab-rm {
+    margin: 40px 0;
+}
+.lab-rm h2 {
+    margin: 0 0 8px 0;
+    font-family: 'tiempos_semibold';
+    font-size: 22px;
+}
+.lab-rm__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.lab-rm__header img {
+    width: 80px !important;
+    height: 80px !important;
+    margin-right: 20px;
+}
+.lab-rm__desc {
+    font-family: adelle_sansregular, sans-serif;
+    font-size: 16px;
+    line-height: 1.3;
+}
+.lab-rm__container {
+    position: relative;
+    margin: 0 -20px;
+}
+.lab-rm__content {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+.lab-rm__content::-webkit-scrollbar {
+    display: none;
+}
+.lab-rm__scroll-helper {
+    position: absolute;
+    right: 0;
+    top: calc(50% - 35px); /* NB! scroll-button height+padding*2 / 2 */
+    transition: .5s;
+    padding: 15px;
+}
+.lab-rm__scroll-helper--reverse {
+    left: 0;
+    right: unset;
+    transform: rotate(180deg);
+}
+.lab-rm__scroll-button {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 1px 1px 5px lightgray;
+    width: 40px;
+    height: 40px;
+    clip-path: circle();
+    background: white;
+}
+.lab-rm__elem {
+    flex: 0 0 auto;
+    position: relative;
+    height: 320px;
+    width: 240px;
+    margin-right: 10px;
+    margin-bottom: 0 !important;
+}
+.lab-rm__elem:last-of-type {
+    margin-right: 0;
+}
+.lab-rm__overlay {
+    position: absolute;
+    bottom: 0;
+    background: linear-gradient(#ffffff00, #00000085);
+    width: 100%;
+}
+.lab-rm h3 {
+    padding: 20px;
+    margin: 0;
+    font-family: 'tiempos_semibold', serif;
+    font-size: 20px;
+}
+.lab-rm a {
+    color: white;
+    text-decoration: none;
+}
+.lab-rm__elem img {
+    height: 100% !important;
+    width: 100%;
+    object-fit: cover;
+    object-position: center center;
+}
+@media (min-width: 480px) {
+    .lab-rm__container {
+        position: relative;
+        margin: 0 -80px;
+    }
+    .lab-rm__elem {
+        width: 480px;
+        margin-right: 20px;
+    }
+}`
+document.head.appendChild(style)
+
+</script>
+</body>
+</html>
