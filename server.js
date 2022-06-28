@@ -17,35 +17,44 @@ app.use(cors({
   origin:'http://127.0.0.1:5500'
 }));
 
-// const content = {
+// const TEMP_CONTENT = {
 //   title: "Tittel",
 //   desc: "Beskrivelse",
 //   tag: "Serie",
 //   img: "#",
 //   seriesUrl: "#",
 //   itemWidth: 480,
-//   articles: [
-//       {
-//           url: 1,
-//           uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
-//           title: "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
-//       },
-//       {
-//           url: 2,
-//           uuid: "e7a0770f-b59d-5386-a202-2f708e33db54",
-//           title: "Rasmus Hansson: – Hvis EU-avtalen raserer norsk landbruk, stemmer jeg nei"
-//       },
-//       {
-//           url: 3,
-//           uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
-//           title: "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
-//       },
-//       {
-//           url: 4,
-//           uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
-//           title: "Siste slide"
-//       }
-//   ]
+//   articles: [{
+      //   "url": 1,
+      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
+      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
+      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
+      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
+      // }, {
+      //   "url": 2,
+      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
+      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
+      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
+      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
+      // }, {
+      //   "url": 3,
+      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
+      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
+      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
+      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
+      // }, {
+      //   "url": 4,
+      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
+      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
+      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
+      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
+      // }, {
+      //   "url": 5,
+      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
+      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
+      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
+      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
+      // }]
 // }
 
 app.get('/', (req, res) => {
@@ -69,9 +78,11 @@ app.post('/api/articles', (req , res) => {
 
   const article = {
     id: foontent.articles.length + 1,
-    url: req.body.url,
+    url: req.body.url,    
     uuid: req.body.uuid,
-    title: req.body.title
+    alt: req.body.alt,
+    title: req.body.title,
+    summary: req.body.summary
   };
   foontent.articles.push(article);
   writeFile('ukasviktigste.json', JSON.stringify(foontent));
@@ -91,9 +102,11 @@ app.post('/api/articles/all', (req, res) => {
 
     const article = {
       id: foontent.articles.length + 1,
-      url: foo.url,
+      url: foo.url,    
       uuid: foo.uuid,
-      title: foo.title
+      alt: foo.alt,
+      title: foo.title,
+      summary: foo.summary
     };
 
     foontent.articles.push(article);
@@ -164,7 +177,10 @@ function validatearticle(article) {
   const schema = {
    url: Joi.string(),
    uuid: Joi.string().min(10).max(40),
+   alt: Joi.string(),
+   summary: Joi.array().items(Joi.string(), Joi.string(), Joi.string()),
    title: Joi.string().min(7)
+
   };
 
   return Joi.validate(article, schema);

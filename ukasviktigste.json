@@ -1,29 +1,34 @@
 {
   "title": "Tittel",
-  "desc": "Beskrivelse",
-  "tag": "Serie",
-  "img": "#",
-  "seriesUrl": "#",
-  "itemWidth": 480,
+  "display": "true",
+  "utm": "",
   "articles": [{
     "id": 1,
-    "url": "https://www.nationen.no/naering/vil-at-staten-skal-bla-opp-halvannen-milliard-for-skogeiendom/",
-    "uuid": "0d18a899-3a55-51cd-9b44-3e5069e46908",
-    "title": "Vil at staten skal bla opp halvannen milliard for skogeiendom\nArbeiderpartiet, Senterpartiet og SV mener staten bør kjøpe Meraker Brug. Skogeiendommen har en prislapp på 1,5 milliarder."
+    "url": "1",
+    "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
+    "alt": "Luftfoto av Meraker Brug. Foto: Meraker Brug",
+    "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge",
+    "summary": ["første punkt", "andre punkt", "tredje punkt"]
   }, {
     "id": 2,
-    "url": "https://www.nationen.no/landbruk/bondetinget-haland-kan-ga-for-varaplassen-i-bondelagets-styre/",
-    "uuid": "22f2052b-668a-567d-91f0-b337291ad8fb",
-    "title": "Bondetinget: Håland kan gå for varaplassen i Bondelagets styre\nTidligere bondeopprører og leder i Sandnes Bondelag, Sven Martin Håland, vil trolig kjempe for plassen som første vara i styret."
+    "url": "2",
+    "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
+    "alt": "Luftfoto av Meraker Brug. Foto: Meraker Brug",
+    "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge",
+    "summary": ["første punkt", "andre punkt", "tredje punkt"]
   }, {
     "id": 3,
-    "url": "https://www.nationen.no/landbruk/staende-applaus-for-borch-pa-bondetinget/",
-    "uuid": "e46a3e6d-3ac9-5e42-89ed-85af9239f019",
-    "title": "Stående applaus for Borch på Bondetinget\n– La det ikke være noen tvil om at årets jordbruksoppgjør har vært en tung politisk prioritering, sa landbruksminister Sandra Borch da hun snakket til Bondetinget torsdag morgen."
+    "url": "3",
+    "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
+    "alt": "Luftfoto av Meraker Brug. Foto: Meraker Brug",
+    "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge",
+    "summary": ["første punkt", "andre punkt", "tredje punkt"]
   }, {
     "id": 4,
-    "url": "https://www.nationen.no/motkultur/debatt/hvem-skal-eie-distrikts-norge/",
-    "uuid": "e46a3e6d-3ac9-5e42-89ed-85af9239f019",
-    "title": "Bondetinget: Håland kan gå for varaplassen i Bondelagets styre\nTidligere bondeopprører og leder i Sandnes Bondelag, Sven Martin Håland, vil trolig kjempe for plassen som første vara i styret."
+    "url": "4",
+    "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
+    "alt": "Luftfoto av Meraker Brug. Foto: Meraker Brug",
+    "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge",
+    "summary": ["første punkt", "andre punkt", "tredje punkt"]
   }]
 }
