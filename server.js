@@ -13,8 +13,9 @@ let mode = '';
 console.log(`NODE_ENV=${config.NODE_ENV}`);
 
 app.use(express.json());
+app.use(express.static('public'));
 app.use(cors({
-  origin:'http://127.0.0.1:5500'
+  origin:'*'
 }));
 
 // const TEMP_CONTENT = {
@@ -71,12 +72,12 @@ app.get('/api/articles',(req,res) => {
   logAccess(logtext, now);
   
 
-  let foontent = JSON.parse(readFile('ukasviktigste.json')); 
+  let foontent = JSON.parse(readFile('./public/ukasviktigste.json')); 
   res.send(foontent);
 });
 
 app.post('/api/articles', (req , res) => {
-  let foontent = JSON.parse(readFile('ukasviktigste.json'));
+  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
 
   const {error} = validatearticle(req.body);
   if(error) return res.status(400).send(error.details[0].message);
@@ -91,13 +92,13 @@ app.post('/api/articles', (req , res) => {
     summary: req.body.summary
   };
   foontent.articles.push(article);
-  writeFile('ukasviktigste.json', JSON.stringify(foontent));
+  writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
   res.send(article);
 });
 
 app.post('/api/articles/all', (req, res) => {
 
-  let foontent = JSON.parse(readFile('ukasviktigste.json'));
+  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
   foontent.articles = []; //tømmer gammel data
   
   req.body.forEach(foo => {
@@ -120,12 +121,12 @@ app.post('/api/articles/all', (req, res) => {
 
   logAccess("post-request to /api/articles/all", getNow())
  
-  writeFile('ukasviktigste.json', JSON.stringify(foontent));
+  writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
   res.send(foontent.articles);
 });
 
 app.put('/api/articles/:id', (req, res) => {
-  let foontent = JSON.parse(readFile('ukasviktigste.json'));
+  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
 
   const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
   if(!article)  return res.status(404).send(`Artikkel med gitt URL finnes ikke 
@@ -137,12 +138,12 @@ app.put('/api/articles/:id', (req, res) => {
   if(req.body.url) article.uuid = req.body.url;
   if(req.body.uuid) article.uuid = req.body.uuid;
   if(req.body.title) article.title = req.body.title;
-  writeFile('ukasviktigste.json', JSON.stringify(foontent))
+  writeFile('./public/ukasviktigste.json', JSON.stringify(foontent))
   res.send(article);
 });
 
 app.delete('/api/articles/:id', (req, res) => {
-  let foontent = JSON.parse(readFile('ukasviktigste.json'));
+  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
   //Look up the article
   //not existing, return 404
   const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
@@ -152,13 +153,13 @@ app.delete('/api/articles/:id', (req, res) => {
   const index = foontent.articles.indexOf(article);
   foontent.articles.splice(index, 1);
   //return the same article
-  writeFile('ukasviktigste.json', JSON.stringify(foontent));
+  writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
   res.send(article);
 });
 
 app.get('/api/articles/:id', (req, res) => {
 
-  let foontent = JSON.parse(readFile('ukasviktigste.json'));
+  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
 
   const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
   if(!article) return res.status(404).send(`Artikkel med gitt URL ${req.params.id} finnes ikke `);
@@ -166,7 +167,7 @@ app.get('/api/articles/:id', (req, res) => {
 });
 
 app.get('/api/test', (req, res) => {
- res.send(readFile('ukasviktigste.json')) 
+ res.send(readFile('./public/ukasviktigste.json')) 
 
 })
 
@@ -174,10 +175,14 @@ app.get('/api/test', (req, res) => {
 // PORT
 // const port = process.env.PORT || 3000;
 
-app.listen(config.PORT, config.HOST, () => {
-  console.log(`APP LISTENING ON http://${config.HOST}:${config.PORT}`);
-  console.log(config.PW);
-})
+// app.listen(config.PORT, config.HOST, () => {
+//   console.log(`APP LISTENING ON http://${config.HOST}:${config.PORT}`);
+//   console.log(config.PW);
+// })
+
+app.listen(3000, () => {
+  console.log('Server running and listening on port 3000')
+});
 
 //validates the sendt data
   //not correct validation jet
@@ -231,7 +236,7 @@ return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + sec
 }
 
 function logAccess(text, date) {
-  fs.writeFile('./log.txt', "\r\n" + text + " "+ date, { flag: 'a+' }, err => {
+  fs.writeFile('./public/log.txt', "\r\n" + text + " "+ date, { flag: 'a+' }, err => {
     if(err === null) return; 
     console.log('something wrong happened :(' + err)
   });
