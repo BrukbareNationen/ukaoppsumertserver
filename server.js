@@ -64,7 +64,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/articles',(req,res) => {
-  console.log("get-request to /api/articles");
+  let now = getNow();
+  let logtext = "get-request to /api/articles";
+  
+
+  logAccess(logtext, now);
+  
+
   let foontent = JSON.parse(readFile('ukasviktigste.json')); 
   res.send(foontent);
 });
@@ -111,6 +117,8 @@ app.post('/api/articles/all', (req, res) => {
 
     foontent.articles.push(article);
   });
+
+  logAccess("post-request to /api/articles/all", getNow())
  
   writeFile('ukasviktigste.json', JSON.stringify(foontent));
   res.send(foontent.articles);
@@ -200,3 +208,31 @@ function writeFile(file, data) {
   console.log("Written to file");
 }
 
+function getNow() {
+  let date_ob = new Date();
+  let date = ("0" + date_ob.getDate()).slice(-2);
+
+// current month
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+
+// current year
+let year = date_ob.getFullYear();
+
+// current hours
+let hours = date_ob.getHours();
+
+// current minutes
+let minutes = date_ob.getMinutes();
+
+// current seconds
+let seconds = date_ob.getSeconds();
+
+return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds
+}
+
+function logAccess(text, date) {
+  fs.writeFile('./log.txt', "\r\n" + text + " "+ date, { flag: 'a+' }, err => {
+    if(err === null) return; 
+    console.log('something wrong happened :(' + err)
+  });
+}
