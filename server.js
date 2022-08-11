@@ -10,7 +10,7 @@ const cors = require('cors');
 
 let mode = '';
 
-console.log(`NODE_ENV=${config.NODE_ENV}`);
+// console.log(`NODE_ENV=${config.NODE_ENV}`);
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -102,15 +102,14 @@ app.post('/api/articles/all', (req, res) => {
 
   foontent.articles = []; //tømmer gammel data
 
-  console.log(req.body.display, foontent.display);
+  
   foontent.display = req.body.display;
   foontent.title = req.body.title;
   foontent.utm = req.body.utm;
-  console.log(req.body.display, foontent.display);
+  
 
   req.body.articles.forEach(foo => {
-
-    // console.log(foo);
+    
     const {error} = validatearticle(foo);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -126,7 +125,7 @@ app.post('/api/articles/all', (req, res) => {
   });
 
   logAccess("post-request to /api/articles/all", getNow())
-  console.log(foontent);
+  
   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
   res.send(foontent.articles);
 });
@@ -209,7 +208,8 @@ function validatearticle(article) {
 
 function readFile(file) {
   var content = fs.readFileSync(file, 'utf8');
-  console.log("Read file");
+  let time = getNow();
+  console.log("Read file" , time);
   return content;
   
 }
@@ -245,6 +245,7 @@ return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + sec
 function logAccess(text, date) {
   fs.writeFile('./public/log.txt', "\r\n" + text + " "+ date, { flag: 'a+' }, err => {
     if(err === null) return; 
-    console.log('something wrong happened :(' + err)
+    let time = getNow();
+    console.log('something wrong happened :(' , time , err)
   });
 }
