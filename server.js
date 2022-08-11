@@ -99,12 +99,16 @@ app.post('/api/articles', (req , res) => {
 app.post('/api/articles/all', (req, res) => {
 
   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
+
   foontent.articles = []; //tømmer gammel data
+
   console.log(req.body.display, foontent.display);
   foontent.display = req.body.display;
+  console.log(req.body.display, foontent.display);
+
   req.body.articles.forEach(foo => {
 
-    console.log(foo);
+    // console.log(foo);
     const {error} = validatearticle(foo);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -116,12 +120,11 @@ app.post('/api/articles/all', (req, res) => {
       title: foo.title,
       summary: foo.summary
     };
-
     foontent.articles.push(article);
   });
 
   logAccess("post-request to /api/articles/all", getNow())
- 
+  console.log(foontent);
   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
   res.send(foontent.articles);
 });
