@@ -21,39 +21,57 @@ background: lightblue;">
 </section>
 
 <script>
-const content = {
-    title: "Tittel",
-    desc: "Beskrivelse",
-    tag: "Serie",
-    img: "#",
-    seriesUrl: "#",
-    itemWidth: 480,
-    articles: [
-        {
-            url: "#1",
-            uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
-            title: "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
-        },
-        {
-            url: "#2",
-            uuid: "e7a0770f-b59d-5386-a202-2f708e33db54",
-            title: "Rasmus Hansson: – Hvis EU-avtalen raserer norsk landbruk, stemmer jeg nei"
-        },
-        {
-            url: "#3",
-            uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
-            title: "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
-        },
-        {
-            url: "#4",
-            uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
-            title: "Siste slide"
-        }
-    ]
+// const content = {
+//     title: "Tittel",
+//     desc: "Beskrivelse",
+//     tag: "Serie",
+//     img: "#",
+//     seriesUrl: "#",
+//     itemWidth: 480,
+//     articles: [
+//         {
+//             url: "#1",
+//             uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
+//             title: "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
+//         },
+//         {
+//             url: "#2",
+//             uuid: "e7a0770f-b59d-5386-a202-2f708e33db54",
+//             title: "Rasmus Hansson: – Hvis EU-avtalen raserer norsk landbruk, stemmer jeg nei"
+//         },
+//         {
+//             url: "#3",
+//             uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
+//             title: "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
+//         },
+//         {
+//             url: "#4",
+//             uuid: "e4266d54-ca1e-546c-848e-21e8f10c1928",
+//             title: "Siste slide"
+//         }
+//     ]
+// }
+
+function getServerValues() {
+
+
+    let numberofform = countForms();
+
+    fetch('https://ec2-16-171-36-148.eu-north-1.compute.amazonaws.com/api/articles')
+    .then(response => response.json()).then(data => {
+   
+    build(data)
+    return data;
+    })
+    
+
 }
 
+
 // Build
-const articleUrl = location.protocol + '//' + location.host + location.pathname,
+function build(content) {
+
+    const articleUrl = location.protocol + '//' + location.host + location.pathname,
     rm = document.querySelector(".lab-rm")
 
 const header = document.createElement("div")
@@ -252,6 +270,9 @@ style.innerHTML = `
 }`
 document.head.appendChild(style)
 
+}
+
+getServerValues();
 </script>
 </body>
 </html>
