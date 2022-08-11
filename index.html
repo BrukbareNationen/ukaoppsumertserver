@@ -54,9 +54,6 @@ background: lightblue;">
 
 function getServerValues() {
 
-
-    
-
     fetch('https://ec2-16-171-36-148.eu-north-1.compute.amazonaws.com/api/articles')
     .then(response => response.json()).then(data => {
    
@@ -98,7 +95,7 @@ content.articles.forEach(e => {
             <div class="lab-rm__overlay">
                 <h3>${e.title}</h3>
             </div>
-            <img src="https://imengine.public.prod.tun.infomaker.io?uuid=${e.uuid}&type=preview&function=hardcrop&q=85&width=${content.itemWidth}" width="${content.itemWidth}">
+            <img src="https://imengine.public.prod.tun.infomaker.io?uuid=${e.uuid}&type=preview&function=hardcrop&q=85&width=480" width="480">
         </a>
     </article>`
 })
