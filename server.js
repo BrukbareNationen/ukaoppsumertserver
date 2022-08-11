@@ -101,7 +101,7 @@ app.post('/api/articles/all', (req, res) => {
   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
   foontent.articles = []; //tømmer gammel data
   
-  req.body.forEach(foo => {
+  req.body.articles.forEach(foo => {
 
     console.log(foo);
     const {error} = validatearticle(foo);
@@ -125,46 +125,46 @@ app.post('/api/articles/all', (req, res) => {
   res.send(foontent.articles);
 });
 
-app.put('/api/articles/:id', (req, res) => {
-  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
+// app.put('/api/articles/:id', (req, res) => {
+//   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
 
-  const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
-  if(!article)  return res.status(404).send(`Artikkel med gitt URL finnes ikke 
-  ${req.params.url}`);
+//   const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
+//   if(!article)  return res.status(404).send(`Artikkel med gitt URL finnes ikke 
+//   ${req.params.url}`);
   
-  const {error} = validatearticle(req.body);
-  if(error) return res.status(400).send(error.details[0].message);
+//   const {error} = validatearticle(req.body);
+//   if(error) return res.status(400).send(error.details[0].message);
    
-  if(req.body.url) article.uuid = req.body.url;
-  if(req.body.uuid) article.uuid = req.body.uuid;
-  if(req.body.title) article.title = req.body.title;
-  writeFile('./public/ukasviktigste.json', JSON.stringify(foontent))
-  res.send(article);
-});
+//   if(req.body.url) article.uuid = req.body.url;
+//   if(req.body.uuid) article.uuid = req.body.uuid;
+//   if(req.body.title) article.title = req.body.title;
+//   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent))
+//   res.send(article);
+// });
 
-app.delete('/api/articles/:id', (req, res) => {
-  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
-  //Look up the article
-  //not existing, return 404
-  const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
-  if(!article) return res.status(404).send('Artikkel med gitt URL finnes ikke');
+// app.delete('/api/articles/:id', (req, res) => {
+//   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
+//   //Look up the article
+//   //not existing, return 404
+//   const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
+//   if(!article) return res.status(404).send('Artikkel med gitt URL finnes ikke');
 
-  //delete
-  const index = foontent.articles.indexOf(article);
-  foontent.articles.splice(index, 1);
-  //return the same article
-  writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
-  res.send(article);
-});
+//   //delete
+//   const index = foontent.articles.indexOf(article);
+//   foontent.articles.splice(index, 1);
+//   //return the same article
+//   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
+//   res.send(article);
+// });
 
-app.get('/api/articles/:id', (req, res) => {
+// app.get('/api/articles/:id', (req, res) => {
 
-  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
+//   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
 
-  const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
-  if(!article) return res.status(404).send(`Artikkel med gitt URL ${req.params.id} finnes ikke `);
-  res.send(article);
-});
+//   const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
+//   if(!article) return res.status(404).send(`Artikkel med gitt URL ${req.params.id} finnes ikke `);
+//   res.send(article);
+// });
 
 app.get('/api/test', (req, res) => {
  res.send(readFile('./public/ukasviktigste.json')) 
@@ -210,10 +210,11 @@ function readFile(file) {
 
 function writeFile(file, data) {
   fs.writeFileSync(file, data);
-  console.log("Written to file");
+  let time = getNow();
+  console.log("Written to file" , time);
 }
 
-function getNow() {
+function getNow() {   
   let date_ob = new Date();
   let date = ("0" + date_ob.getDate()).slice(-2);
 
