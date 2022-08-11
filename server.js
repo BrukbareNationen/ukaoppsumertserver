@@ -104,6 +104,8 @@ app.post('/api/articles/all', (req, res) => {
 
   console.log(req.body.display, foontent.display);
   foontent.display = req.body.display;
+  foontent.title = req.body.title;
+  foontent.utm = req.body.utm;
   console.log(req.body.display, foontent.display);
 
   req.body.articles.forEach(foo => {
