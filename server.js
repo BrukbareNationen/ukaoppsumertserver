@@ -101,6 +101,7 @@ app.post('/api/articles/all', (req, res) => {
   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
   foontent.articles = []; //tømmer gammel data
   
+  foontent.display = req.body.display;
   req.body.articles.forEach(foo => {
 
     console.log(foo);
