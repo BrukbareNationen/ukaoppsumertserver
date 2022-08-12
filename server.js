@@ -175,14 +175,18 @@ app.post('/api/articles/all', (req, res) => {
 //  res.send(readFile('./public/ukasviktigste.json')) 
 // })
 
-app.post('/api/passord', (req, res) => {
+app.get('/api/passord' , (req, res) => {
+  res.send('helloo')
+});
 
-  let password = 'Nationen1918';
+app.post('/api/pass', (req, res) => {
 
-  if(req.body.password == password) {res.send(true)} else {
-    res.send('Feil passord')
-  }
-    
+ let password = 'Nationen1918';
+ if(req.body.password == password) {
+  res.send(true);
+  return ;
+ }  
+  res.send(false);
 });
 
 
