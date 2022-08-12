@@ -76,25 +76,25 @@ app.get('/api/articles',(req,res) => {
   res.send(foontent);
 });
 
-app.post('/api/articles', (req , res) => {
-  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
+// app.post('/api/articles', (req , res) => {
+//   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
 
-  const {error} = validatearticle(req.body);
-  if(error) return res.status(400).send(error.details[0].message);
+//   const {error} = validatearticle(req.body);
+//   if(error) return res.status(400).send(error.details[0].message);
     
 
-  const article = {
-    id: foontent.articles.length + 1,
-    url: req.body.url,    
-    uuid: req.body.uuid,
-    alt: req.body.alt,
-    title: req.body.title,
-    summary: req.body.summary
-  };
-  foontent.articles.push(article);
-  writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
-  res.send(article);
-});
+//   const article = {
+//     id: foontent.articles.length + 1,
+//     url: req.body.url,    
+//     uuid: req.body.uuid,
+//     alt: req.body.alt,
+//     title: req.body.title,
+//     summary: req.body.summary
+//   };
+//   foontent.articles.push(article);
+//   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
+//   res.send(article);
+// });
 
 app.post('/api/articles/all', (req, res) => {
 
@@ -171,10 +171,19 @@ app.post('/api/articles/all', (req, res) => {
 //   res.send(article);
 // });
 
-app.get('/api/test', (req, res) => {
- res.send(readFile('./public/ukasviktigste.json')) 
+// app.get('/api/test', (req, res) => {
+//  res.send(readFile('./public/ukasviktigste.json')) 
+// })
 
-})
+app.post('/api/passord', (req, res) => {
+
+  let password = 'Nationen1918';
+
+  if(req.body.password == password) {res.send(true)} else {
+    res.send('Feil passord')
+  }
+    
+});
 
 
 // PORT
