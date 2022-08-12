@@ -179,6 +179,10 @@ app.get('/api/passord' , (req, res) => {
   res.send('helloo')
 });
 
+app.use(cors({
+  origin:'*'
+}));
+
 app.post('/api/pass', (req, res) => {
 
  let password = 'Nationen1918';
