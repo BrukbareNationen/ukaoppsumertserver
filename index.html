@@ -54,7 +54,7 @@ background: lightblue;">
 
 function getServerValues() {
 
-    fetch('https://ec2-16-171-36-148.eu-north-1.compute.amazonaws.com/api/articles')
+    fetch('https://api.nationen.no/api/articles')
     .then(response => response.json()).then(data => {
    
     build(data)
