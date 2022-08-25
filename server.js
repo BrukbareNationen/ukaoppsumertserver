@@ -111,7 +111,10 @@ app.post('/api/articles/all', (req, res) => {
   req.body.articles.forEach(foo => {
     
     const {error} = validatearticle(foo);
-    if(error) return res.status(400).send(error.details[0].message);
+    if(error) {
+      console.log(error);
+      return res.status(400).send(error.details[0].message);
+    }
 
     const article = {
       id: foontent.articles.length + 1,
@@ -122,7 +125,7 @@ app.post('/api/articles/all', (req, res) => {
       summary: foo.summary
     };
     foontent.articles.push(article);
-    return
+    return 
   });
 
   logAccess("post-request to /api/articles/all", getNow())
