@@ -122,6 +122,7 @@ app.post('/api/articles/all', (req, res) => {
       summary: foo.summary
     };
     foontent.articles.push(article);
+    return
   });
 
   logAccess("post-request to /api/articles/all", getNow())
