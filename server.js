@@ -213,7 +213,7 @@ function validatearticle(article) {
    url: Joi.string(),
    uuid: Joi.string().min(10).max(40),
    alt: Joi.string(),
-   summary: Joi.array().items(Joi.string(), Joi.string(), Joi.string()),
+  //  summary: Joi.array().items(Joi.string(), Joi.string(), Joi.string()),
    title: Joi.string().min(7)
 
   };
