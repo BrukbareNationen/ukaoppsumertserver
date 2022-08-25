@@ -11,12 +11,12 @@ const cors = require('cors');
 let mode = '';
 
 // console.log(`NODE_ENV=${config.NODE_ENV}`);
-
-app.use(express.json());
-app.use(express.static('public'));
 app.use(cors({
   origin:'*'
 }));
+app.use(express.json());
+app.use(express.static('public'));
+
 
 // const TEMP_CONTENT = {
 //   title: "Tittel",
