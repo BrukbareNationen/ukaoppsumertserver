@@ -179,7 +179,7 @@ function validatearticle(article) {
    url: Joi.string(),
    uuid: Joi.string().min(10).max(40),
    alt: Joi.string(),
-   subtitle: Joi.string(),
+   subtitle: Joi.string().min(0),
    title: Joi.string().min(7)
   };
 
