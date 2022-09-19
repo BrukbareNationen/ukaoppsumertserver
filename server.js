@@ -70,8 +70,6 @@ app.post('/api/articles/all', (req, res) => {
   
 
   req.body.articles.forEach(inArticle => {
-
-    console.log(inArticle);
     
     const {error} = validatearticle(inArticle);
     if(error) {
@@ -88,8 +86,8 @@ app.post('/api/articles/all', (req, res) => {
       subtitle: inArticle.subtitle
     };
     foontent.articles.push(inArticle);
-    console.log(inArticle);
-    return res.send(foontent);
+    
+    return
   });
 
   logAccess("post-request to /api/articles/all", getNow())
