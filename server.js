@@ -18,45 +18,6 @@ app.use(express.json());
 app.use(express.static('public'));
 
 
-// const TEMP_CONTENT = {
-//   title: "Tittel",
-//   desc: "Beskrivelse",
-//   tag: "Serie",
-//   img: "#",
-//   seriesUrl: "#",
-//   itemWidth: 480,
-//   articles: [{
-      //   "url": 1,
-      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
-      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
-      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
-      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
-      // }, {
-      //   "url": 2,
-      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
-      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
-      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
-      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
-      // }, {
-      //   "url": 3,
-      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
-      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
-      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
-      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
-      // }, {
-      //   "url": 4,
-      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
-      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
-      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
-      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
-      // }, {
-      //   "url": 5,
-      //   "uuid": "e4266d54-ca1e-546c-848e-21e8f10c1928",
-      //   "alt" : "Luftfoto av Meraker Brug. Foto: Meraker Brug",
-      //   "summary" : ["første punkt", "andre punkt", "tredje punkt"],
-      //   "title": "Siv og Tor Erik tror neppe de vil tjene på å bygge om til løsdrift, men snart må de velge"
-      // }]
-// }
 
 app.get('/', (req, res) => {
   // res.send('Da er vi i gang da.. Ukas Viktigste API');
@@ -89,7 +50,7 @@ app.get('/api/articles',(req,res) => {
 //     uuid: req.body.uuid,
 //     alt: req.body.alt,
 //     title: req.body.title,
-//     summary: req.body.summary
+//     subtitle: req.body.subtitle
 //   };
 //   foontent.articles.push(article);
 //   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
@@ -122,7 +83,7 @@ app.post('/api/articles/all', (req, res) => {
       uuid: foo.uuid,
       alt: foo.alt,
       title: foo.title,
-      summary: foo.summary
+      subtitle: foo.subtitle
     };
     foontent.articles.push(article);
     return 
@@ -217,9 +178,8 @@ function validatearticle(article) {
    url: Joi.string(),
    uuid: Joi.string().min(10).max(40),
    alt: Joi.string(),
-  //  summary: Joi.array().items(Joi.string(), Joi.string(), Joi.string()),
+   subtitle: Joi.string(),
    title: Joi.string().min(7)
-
   };
 
   return Joi.validate(article, schema);
