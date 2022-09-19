@@ -69,24 +69,27 @@ app.post('/api/articles/all', (req, res) => {
   foontent.utm = req.body.utm;
   
 
-  req.body.articles.forEach(foo => {
+  req.body.articles.forEach(inArticle => {
+
+    console.log(inArticle);
     
-    // const {error} = validatearticle(foo);
-    // if(error) {
-    //   console.log(error);
-    //   return res.status(400).send(error.details[0].message);
-    // }
+    const {error} = validatearticle(inArticle);
+    if(error) {
+      console.log(error);
+      return res.status(400).send(error.details[0].message);
+    }
 
     const article = {
       id: foontent.articles.length + 1,
-      url: foo.url,    
-      uuid: foo.uuid,
-      alt: foo.alt,
-      title: foo.title,
-      subtitle: foo.subtitle
+      url: inArticle.url,    
+      uuid: inArticle.uuid,
+      alt: inArticle.alt,
+      title: inArticle.title,
+      subtitle: inArticle.subtitle
     };
-    foontent.articles.push(article);
-    return 
+    foontent.articles.push(inArticle);
+    console.log(inArticle);
+    return res.send(foontent);
   });
 
   logAccess("post-request to /api/articles/all", getNow())
