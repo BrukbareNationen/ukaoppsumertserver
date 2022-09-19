@@ -71,11 +71,11 @@ app.post('/api/articles/all', (req, res) => {
 
   req.body.articles.forEach(inArticle => {
     
-    const {error} = validatearticle(inArticle);
-    if(error) {
-      console.log(error);
-      return res.status(400).send(error.details[0].message);
-    }
+    // const {error} = validatearticle(inArticle);
+    // if(error) {
+    //   console.log(error);
+    //   return res.status(400).send(error.details[0].message);
+    // }
 
     const article = {
       id: foontent.articles.length + 1,
