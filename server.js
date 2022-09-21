@@ -83,7 +83,8 @@ app.post('/api/articles/all', (req, res) => {
       uuid: inArticle.uuid,
       alt: inArticle.alt,
       title: inArticle.title,
-      subtitle: inArticle.subtitle
+      subtitle: inArticle.subtitle,
+      crop: inArticle.crop
     };
     foontent.articles.push(inArticle);
     
