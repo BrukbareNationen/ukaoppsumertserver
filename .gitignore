@@ -4,3 +4,4 @@ log-dev.txt
 node_modules
 /public/ukasviktigste.json
 ukasviktigste.json
+public/log-dev.txt

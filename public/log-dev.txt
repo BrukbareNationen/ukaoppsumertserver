@@ -31,3 +31,4 @@ get-request to /dev/api/articles 2022-09-26 14:23:20
 post-request to /dev/api/articles/all 2022-09-26 14:24:20
 get-request to /dev/api/articles 2022-09-26 14:24:31
 get-request to /dev/api/articles 2022-09-26 14:26:30
+get-request to /dev/api/articles 2022-09-26 14:37:0
