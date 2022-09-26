@@ -86,7 +86,7 @@ app.post('/api/articles/all', (req, res) => {
       subtitle: inArticle.subtitle,
       crop: inArticle.crop
     };
-    foontent.articles.push(inArticle);
+    foontent.articles.push(article);
     
     return
   });

@@ -33,33 +33,16 @@ app.get('/dev/api/articles',(req,res) => {
   logAccess(logtext, now);
   
 
-  let foontent = JSON.parse(readFile('./public/ukasviktigste-dev.json')); 
+  let foontent = checkFile('./public/ukasviktigste-dev.json');
   res.send(foontent);
 });
 
-// app.post('/api/articles', (req , res) => {
-//   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
-
-//   const {error} = validatearticle(req.body);
-//   if(error) return res.status(400).send(error.details[0].message);
-    
-
-//   const article = {
-//     id: foontent.articles.length + 1,
-//     url: req.body.url,    
-//     uuid: req.body.uuid,
-//     alt: req.body.alt,
-//     title: req.body.title,
-//     subtitle: req.body.subtitle
-//   };
-//   foontent.articles.push(article);
-//   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
-//   res.send(article);
-// });
 
 app.post('/dev/api/articles/all', (req, res) => {
 
-  let foontent = JSON.parse(readFile('./public/ukasviktigste-dev.json'));
+  let foontent = checkFile('./public/ukasviktigste-dev.json')
+  
+  
 
   foontent.articles = []; //tømmer gammel data
 
@@ -86,7 +69,7 @@ app.post('/dev/api/articles/all', (req, res) => {
       subtitle: inArticle.subtitle,
       crop: inArticle.crop
     };
-    foontent.articles.push(inArticle);
+    foontent.articles.push(article);
     
     return
   });
@@ -159,6 +142,16 @@ function writeFile(file, data) {
   console.log("Written to file" , time);
 }
 
+function checkFile (file) {
+  const temp = fs.readFileSync(file, 'utf8').length;
+  if (temp === 0) {
+      console.log("File is Empty")
+      return []
+  } else {
+      return JSON.parse(fs.readFileSync(file, 'utf8'));
+  }
+}
+
 function getNow() {   
   let date_ob = new Date();
   let date = ("0" + date_ob.getDate()).slice(-2);
@@ -188,3 +181,4 @@ function logAccess(text, date) {
     console.log('something wrong happened :(' , time , err)
   });
 }
+
