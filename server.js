@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const config = require('./config.js');
+// const config = require('./config.js');
 const express = require('express');
 const { send } = require('express/lib/response');
 const func = require('joi/lib/types/func');
@@ -8,16 +8,13 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 
-let mode = '';
-
-// console.log(`NODE_ENV=${config.NODE_ENV}`);
 app.use(cors({
   origin: '*'
 }));
 app.use(express.json());
 app.use(express.static('public'));
 
-
+// Mest Lest , Uka Oppsummert
 
 app.get('/', (req, res) => {
   // res.send('Da er vi i gang da.. Ukas Viktigste API');
@@ -25,29 +22,24 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-app.get('/api/articles', (req, res) => {
+app.get('/articles', (req, res) => {
   let now = getNow();
-  let logtext = "get-request to /api/articles";
-
+  let logtext = "get-request to /articles";
 
   logAccess(logtext, now);
 
-
-  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
+  let foontent = checkFile('./public/ukasviktigste.json');
   res.send(foontent);
 });
 
-app.post('/api/articles/all', (req, res) => {
+app.post('/articles/all', (req, res) => {
 
-  let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
-
+  let foontent = checkFile('./public/ukasviktigste.json');
   foontent.articles = []; //tømmer gammel data
-
 
   foontent.display = req.body.display;
   foontent.title = req.body.title;
   foontent.utm = req.body.utm;
-
 
   req.body.articles.forEach(inArticle => {
 
@@ -71,66 +63,17 @@ app.post('/api/articles/all', (req, res) => {
     return
   });
 
-  logAccess("post-request to /api/articles/all", getNow())
+  logAccess("post-request to /articles/all", getNow())
 
   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
   res.send(foontent.articles);
-});
-
-// app.put('/api/articles/:id', (req, res) => {
-//   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
-
-//   const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
-//   if(!article)  return res.status(404).send(`Artikkel med gitt URL finnes ikke 
-//   ${req.params.url}`);
-
-//   const {error} = validatearticle(req.body);
-//   if(error) return res.status(400).send(error.details[0].message);
-
-//   if(req.body.url) article.uuid = req.body.url;
-//   if(req.body.uuid) article.uuid = req.body.uuid;
-//   if(req.body.title) article.title = req.body.title;
-//   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent))
-//   res.send(article);
-// });
-
-// app.delete('/api/articles/:id', (req, res) => {
-//   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
-//   //Look up the article
-//   //not existing, return 404
-//   const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
-//   if(!article) return res.status(404).send('Artikkel med gitt URL finnes ikke');
-
-//   //delete
-//   const index = foontent.articles.indexOf(article);
-//   foontent.articles.splice(index, 1);
-//   //return the same article
-//   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
-//   res.send(article);
-// });
-
-// app.get('/api/articles/:id', (req, res) => {
-
-//   let foontent = JSON.parse(readFile('./public/ukasviktigste.json'));
-
-//   const article = foontent.articles.find(c => c.id === parseInt(req.params.id));
-//   if(!article) return res.status(404).send(`Artikkel med gitt URL ${req.params.id} finnes ikke `);
-//   res.send(article);
-// });
-
-// app.get('/api/test', (req, res) => {
-//  res.send(readFile('./public/ukasviktigste.json')) 
-// })
-
-app.get('/api/passord', (req, res) => {
-  res.send('helloo')
 });
 
 app.use(cors({
   origin: '*'
 }));
 
-app.post('/api/pass', (req, res) => {
+app.post('/pass', (req, res) => {
 
   let password = 'Nationen1918';
   if (req.body.password == password) {
@@ -140,17 +83,54 @@ app.post('/api/pass', (req, res) => {
   res.send(false);
 });
 
+// Ramsviks oppskrifter
 
-// PORT
-// const port = process.env.PORT || 3000;
+app.get('/oppskrifter', (req, res) => {
+  logAccess("get-request to /oppskrifter", getNow());
 
-// app.listen(config.PORT, config.HOST, () => {
-//   console.log(`APP LISTENING ON http://${config.HOST}:${config.PORT}`);
-//   console.log(config.PW);
-// })
+  let recipes = checkFile('./public/oppskrifter.json');
 
-app.listen(3000, () => {
-  console.log('Server running and listening on port 3000')
+  res.send(recipes);
+});
+
+app.post('/oppskrifter', (req, res) => {
+
+  let foontent = checkFile('./public/oppskrifter.json');
+  foontent.recipes = []; //tømmer gammel data
+
+  req.body.display ? foontent.display = req.body.display : foontent.display = "true";
+  req.body.title ? foontent.title = req.body.title : foontent.title = "Ramsviks Oppskrifter";
+  foontent.utm = "";
+
+  
+
+  req.body.recipes.forEach(recipe => {
+    const newRecipe = {
+      id: foontent.recipes.length + 1,
+      url: recipe.url,
+      uuid: recipe.uuid,
+      alt: recipe.alt,
+      title: recipe.title,
+      subtitle: recipe.subtitle,
+      crop: recipe.crop
+    };
+
+    foontent.recipes.push(newRecipe);
+
+  });
+
+  logAccess("post-request to /oppskrifter", getNow())
+
+  writeFile('./public/oppskrifter.json', JSON.stringify(foontent));
+  
+  res.send(foontent);
+  
+
+});
+
+
+app.listen(5000, () => {
+  console.log('Server running and listening on port 5000')
 });
 
 //validates the sendt data
@@ -180,7 +160,29 @@ function readFile(file) {
 function writeFile(file, data) {
   fs.writeFileSync(file, data);
   let time = getNow();
-  console.log("Written to file", time);
+  console.log("Written to file", file, time);
+}
+
+function checkFile(file) {
+
+  try {
+    if (fs.existsSync(file)) {
+      //file exists
+      const temp = fs.readFileSync(file, 'utf8').length;
+      // file empty
+      if (temp === 0) {
+        console.log("File is Empty")
+        return "File is empty";
+      } else {
+        return JSON.parse(fs.readFileSync(file, 'utf8'));
+      }
+    } else { 
+      return "file not found" 
+    }
+  } catch (err) {
+    console.error(err)
+  }
+
 }
 
 function getNow() {
@@ -212,3 +214,4 @@ function logAccess(text, date) {
     console.log('something wrong happened :(', time, err)
   });
 }
+
