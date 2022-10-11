@@ -84,6 +84,9 @@ app.post('/pass', (req, res) => {
 });
 
 // Ramsviks oppskrifter
+app.use(cors({
+  origin: '*'
+}));
 
 app.get('/oppskrifter', (req, res) => {
   logAccess("get-request to /oppskrifter", getNow());

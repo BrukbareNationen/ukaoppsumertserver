@@ -3,5 +3,7 @@ log.txt
 log-dev.txt
 node_modules
 /public/ukasviktigste.json
+/public/oppskrifter.json
 ukasviktigste.json
+oppskrifter.json
 public/log-dev.txt
