@@ -8,11 +8,13 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 
+
+app.use(express.json());
+app.use(express.static('public'));
+
 app.use(cors({
   origin: '*'
 }));
-app.use(express.json());
-app.use(express.static('public'));
 
 // Mest Lest , Uka Oppsummert
 
@@ -69,9 +71,7 @@ app.post('/articles/all', (req, res) => {
   res.send(foontent.articles);
 });
 
-app.use(cors({
-  origin: '*'
-}));
+
 
 app.post('/pass', (req, res) => {
 
@@ -84,9 +84,7 @@ app.post('/pass', (req, res) => {
 });
 
 // Ramsviks oppskrifter
-app.use(cors({
-  origin: '*'
-}));
+
 
 app.get('/oppskrifter', (req, res) => {
   logAccess("get-request to /oppskrifter", getNow());
