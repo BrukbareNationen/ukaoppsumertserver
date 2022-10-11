@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const config = require('./config.js');
+// const config = require('./config.js');
 const express = require('express');
 const { send } = require('express/lib/response');
 const func = require('joi/lib/types/func');
@@ -8,9 +8,9 @@ const fs = require('fs');
 const path = require('path');
 const cors = require('cors');
 
-let mode = '';
 
-// console.log(`NODE_ENV=${config.NODE_ENV}`);
+
+
 app.use(cors({
   origin: '*'
 }));
@@ -25,9 +25,9 @@ app.get('/dev', (req, res) => {
   res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-app.get('/dev/api/articles', (req, res) => {
+app.get('/dev/articles', (req, res) => {
   let now = getNow();
-  let logtext = "get-request to /dev/api/articles";
+  let logtext = "get-request to /dev/articles";
 
   logAccess(logtext, now);
 
@@ -35,7 +35,7 @@ app.get('/dev/api/articles', (req, res) => {
   res.send(foontent);
 });
 
-app.post('/dev/api/articles/all', (req, res) => {
+app.post('/dev/articles/all', (req, res) => {
 
   let foontent = checkFile('./public/ukasviktigste-dev.json');
   foontent.articles = []; //tømmer gammel data
@@ -66,7 +66,7 @@ app.post('/dev/api/articles/all', (req, res) => {
     return
   });
 
-  logAccess("post-request to /dev/api/articles/all", getNow())
+  logAccess("post-request to /dev/articles/all", getNow())
 
   writeFile('./public/ukasviktigste-dev.json', JSON.stringify(foontent));
   res.send(foontent.articles);
@@ -88,15 +88,15 @@ app.post('/api/pass', (req, res) => {
 
 // Ramsviks oppskrifter
 
-app.get('/dev/api/oppskrifter', (req, res) => {
-  logAccess("get-request to /dev/api/oppskrifter", getNow());
+app.get('/dev/oppskrifter', (req, res) => {
+  logAccess("get-request to /dev/oppskrifter", getNow());
 
   let recipes = checkFile('./public/oppskrifter-dev.json');
 
   res.send(recipes);
 });
 
-app.post('/dev/api/oppskrifter', (req, res) => {
+app.post('/dev/oppskrifter', (req, res) => {
 
   let foontent = checkFile('./public/oppskrifter-dev.json');
   foontent.recipes = []; //tømmer gammel data
@@ -122,23 +122,15 @@ app.post('/dev/api/oppskrifter', (req, res) => {
 
   });
 
-  logAccess("post-request to /dev/api/oppskrifter", getNow())
+  logAccess("post-request to /dev/oppskrifter", getNow())
 
   writeFile('./public/oppskrifter-dev.json', JSON.stringify(foontent));
-  console.log(foontent);
+  
   res.send(foontent);
   
 
 });
 
-
-// PORT
-// const port = process.env.PORT || 3000;
-
-// app.listen(config.PORT, config.HOST, () => {
-//   console.log(`APP LISTENING ON http://${config.HOST}:${config.PORT}`);
-//   console.log(config.PW);
-// })
 
 app.listen(5000, () => {
   console.log('Server running and listening on port 5000')
@@ -183,7 +175,7 @@ function checkFile(file) {
       // file empty
       if (temp === 0) {
         console.log("File is Empty")
-        return "file is empty";
+        return "File is empty";
       } else {
         return JSON.parse(fs.readFileSync(file, 'utf8'));
       }
