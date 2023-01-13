@@ -1,8 +1,4 @@
-const Joi = require('joi');
-// const config = require('./config.js');
 const express = require('express');
-const { send } = require('express/lib/response');
-const func = require('joi/lib/types/func');
 const app = express();
 const fs = require('fs');
 const path = require('path');
@@ -13,14 +9,6 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.static('public'));
-
-
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
 
 // Mest Lest , Uka Oppsummert
 
@@ -50,13 +38,6 @@ app.post('/articles/all', (req, res) => {
   foontent.utm = req.body.utm;
 
   req.body.articles.forEach(inArticle => {
-
-    // const {error} = validatearticle(inArticle);
-    // if(error) {
-    //   console.log(error);
-    //   return res.status(400).send(error.details[0].message);
-    // }
-
     const article = {
       id: foontent.articles.length + 1,
       url: inArticle.url,
@@ -67,7 +48,6 @@ app.post('/articles/all', (req, res) => {
       crop: inArticle.crop
     };
     foontent.articles.push(article);
-
     return
   });
 
@@ -76,8 +56,6 @@ app.post('/articles/all', (req, res) => {
   writeFile('./public/ukasviktigste.json', JSON.stringify(foontent));
   res.send(foontent.articles);
 });
-
-
 
 app.post('/pass', (req, res) => {
 
@@ -109,8 +87,6 @@ app.post('/oppskrifter', (req, res) => {
   req.body.title ? foontent.title = req.body.title : foontent.title = "Ramsviks Oppskrifter";
   foontent.utm = "";
 
-  
-
   req.body.recipes.forEach(recipe => {
     const newRecipe = {
       id: foontent.recipes.length + 1,
@@ -121,17 +97,12 @@ app.post('/oppskrifter', (req, res) => {
       subtitle: recipe.subtitle,
       crop: recipe.crop
     };
-
     foontent.recipes.push(newRecipe);
-
   });
 
   logAccess("post-request to /oppskrifter", getNow())
-
-  writeFile('./public/oppskrifter.json', JSON.stringify(foontent));
-  
+  writeFile('./public/oppskrifter.json', JSON.stringify(foontent));  
   res.send(foontent);
-  
 
 });
 
@@ -140,38 +111,15 @@ app.listen(3000, () => {
   console.log('Server running and listening on port 3000')
 });
 
-//validates the sendt data
-//not correct validation jet
-function validatearticle(article) {
-  const schema = {
-    url: Joi.string(),
-    uuid: Joi.string().min(10).max(40),
-    alt: Joi.string(),
-    subtitle: Joi.string().min(0),
-    title: Joi.string().min(7)
-  };
-
-  return Joi.validate(article, schema);
-}
-
 //read and write functions
-
-function readFile(file) {
-  var content = fs.readFileSync(file, 'utf8');
-  let time = getNow();
-  console.log("Read file", time);
-  return content;
-
-}
-
 function writeFile(file, data) {
   fs.writeFileSync(file, data);
   let time = getNow();
   console.log("Written to file", file, time);
 }
 
+// leser fil hvis finnes og returnerer innhold
 function checkFile(file) {
-
   try {
     if (fs.existsSync(file)) {
       //file exists
@@ -214,6 +162,7 @@ function getNow() {
   return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds
 }
 
+// logger til log.txt fil
 function logAccess(text, date) {
   fs.writeFile('./public/log.txt', "\r\n" + text + " " + date, { flag: 'a+' }, err => {
     if (err === null) return;
